@@ -1,7 +1,9 @@
 const { Schema, model } = require("mongoose");
-//const { reactionSchema } = require("./Reaction");
+
+//reaction schema that models the reactions that is embedded in thoughts
 const reactionSchema = new Schema(
   {
+    //generates a reaction ID for each new reaction
     reactionId: {
       type: Schema.Types.ObjectId,
       default: () => new Types.ObjectId(),
@@ -26,6 +28,7 @@ const reactionSchema = new Schema(
   }
 );
 
+//thought schema that models the required fields in the thought
 const thoughtSchema = new Schema(
   {
     thoughtText: {
@@ -39,6 +42,7 @@ const thoughtSchema = new Schema(
       type: String,
       required: true,
     },
+    //embedded reactions
     reactions: [reactionSchema],
   },
   {
@@ -48,6 +52,7 @@ const thoughtSchema = new Schema(
   }
 );
 
+//virtual information for the thought returning the number of reactions a thought has 
 thoughtSchema.virtual("reactionCount").get(() => {
   if (!this.reactions) {
     return `no reactions currently`;
